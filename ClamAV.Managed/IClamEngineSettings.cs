@@ -191,7 +191,7 @@ namespace ClamAV.Managed
         uint MaxRecHwp3 { get; set; }
 
         /// <summary>
-        /// This clamscan option is currently for testing only. It sets the engine parameter CL_ENGINE_TIME_LIMIT. The value is in milliseconds.     
+        /// This clamscan option is currently for testing only. It sets the engine parameter CL_ENGINE_MAX_SCANTIME. The value is in milliseconds.     
         /// </summary>
         uint TimeLimit { get; set; }
 

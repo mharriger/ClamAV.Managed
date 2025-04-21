@@ -76,7 +76,7 @@ namespace ClamAV.Managed
         /// <returns>An unmarshalled string.</returns>
         private static string UnmarshalString(IntPtr ptr)
         {
-            return Marshal.PtrToStringAnsi(ptr);
+            return Marshal.PtrToStringAnsi(ptr) ?? string.Empty;
         }
 
         #endregion
@@ -101,24 +101,24 @@ namespace ClamAV.Managed
         /// <summary>
         /// Cached ClamAV version string.
         /// </summary>
-        private static string _clamVersion;
+        private static string? _clamVersion;
 
         /// <summary>
         /// ClamAV engine version string.
         /// </summary>
         public static string Version =>
-            _clamVersion ?? (_clamVersion = UnmarshalString(UnsafeNativeMethods.cl_retver()));
+            _clamVersion ??= UnmarshalString(UnsafeNativeMethods.cl_retver());
 
         /// <summary>
         /// Cached database directory path.
         /// </summary>
-        private string _databaseDirectory;
+        private string? _databaseDirectory;
 
         /// <summary>
         /// ClamAV hard-coded default database directory.
         /// </summary>
         public string DatabaseDirectory =>
-            _databaseDirectory ?? (_databaseDirectory = UnmarshalString(UnsafeNativeMethods.cl_retdbdir()));
+            _databaseDirectory ??= UnmarshalString(UnsafeNativeMethods.cl_retdbdir());
 
         #endregion
 
@@ -172,10 +172,10 @@ namespace ClamAV.Managed
         /// <summary>
         /// Free the unmanaged resource associated with this ClamAV engine instance.
         /// </summary>
-        /// <param name="b">Whether the dispose method has been called from the finalizer.</param>
-        protected virtual void Dispose(bool b)
+        /// <param name="disposing">Whether the dispose method has been called from the finalizer.</param>
+        protected virtual void Dispose(bool disposing)
         {
-            if (_disposed || _engine.ToInt64() == 0)
+            if (_disposed || _engine == IntPtr.Zero)
                 return;
 
             int result = UnsafeNativeMethods.cl_engine_free(_engine);
@@ -225,10 +225,9 @@ namespace ClamAV.Managed
                 throw new ArgumentNullException(nameof(path));
 
             uint signo = 0;
-            uint optnum = 0;
 
             // Convert LoadOptions parameter.
-            optnum = (uint)options;
+            uint optnum = (uint)options;
 
             // Invoke the native method to load the database.
             var loadResult = (UnsafeNativeMethods.cl_error_t)UnsafeNativeMethods.cl_load(path, _engine, ref signo, optnum);
@@ -274,10 +273,9 @@ namespace ClamAV.Managed
             IntPtr virusNamePtr = IntPtr.Zero;
 
             ulong scanned = 0;
-            uint options = 0;
 
             // Convert ScanOptions parameter.
-            options = (uint)scanOptions;
+            uint options = (uint)scanOptions;
 
             // Perform scan
             var result = (UnsafeNativeMethods.cl_error_t)UnsafeNativeMethods.cl_scanfile(filePath, ref virusNamePtr, ref scanned, _engine, options);
@@ -292,7 +290,7 @@ namespace ClamAV.Managed
             else if (result == UnsafeNativeMethods.cl_error_t.CL_VIRUS)
             {
                 // We've detected a virus.
-                virusName = Marshal.PtrToStringAnsi(virusNamePtr);
+                virusName = Marshal.PtrToStringAnsi(virusNamePtr) ?? string.Empty;
 
                 return ScanResult.Virus;
             }
@@ -348,17 +346,14 @@ namespace ClamAV.Managed
             if (maxDepth < 0)
                 throw new ArgumentException("maxDepth must be 0 or greater.");
 
-            var pathStack = new Stack<Tuple<string /* path */, int /* depth */>>();
+            var pathStack = new Stack<(string path, int depth)>();
 
             // Push the starting directory onto the stack.
-            pathStack.Push(Tuple.Create(directoryPath, 1));
+            pathStack.Push((directoryPath, 1));
 
             while (pathStack.Count > 0)
             {
-                var stackState = pathStack.Pop();
-
-                var currentPath = stackState.Item1;
-                var currentDepth = stackState.Item2;
+                var (currentPath, currentDepth) = pathStack.Pop();
 
                 var attributes = File.GetAttributes(currentPath);
 
@@ -368,25 +363,21 @@ namespace ClamAV.Managed
                     // Check if we're not about to go too deep.
                     if (recurse && (maxDepth == 0 || currentDepth < maxDepth))
                     {
-                        var subFiles = Directory.GetFiles(currentPath);
-                        foreach (var file in subFiles)
+                        foreach (var file in Directory.GetFiles(currentPath))
                         {
-                            pathStack.Push(Tuple.Create(file, currentDepth + 1));
+                            pathStack.Push((file, currentDepth + 1));
                         }
 
-                        var subDirectories = Directory.GetDirectories(currentPath);
-                        foreach (var directory in subDirectories)
+                        foreach (var directory in Directory.GetDirectories(currentPath))
                         {
-                            pathStack.Push(Tuple.Create(directory, currentDepth + 1));
+                            pathStack.Push((directory, currentDepth + 1));
                         }
                     }
                 }
                 // If this is a file, scan it.
                 else
                 {
-                    var virusName = string.Empty;
-                    var scanResult = ScanFile(currentPath, scanOptions, out virusName);
-
+                    var scanResult = ScanFile(currentPath, scanOptions, out string virusName);
                     fileScannedCallback(currentPath, scanResult, virusName);
                 }
             }

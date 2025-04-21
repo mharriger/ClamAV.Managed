@@ -31,23 +31,41 @@ namespace ClamAV.Managed.PowerShell
         /// Parameter accepting a ClamEngine instance.
         /// </summary>
         [Parameter(Mandatory = true, HelpMessage = "ClamEngine created by New-ClamEngine.")]
-        public ClamEngine Engine { get; set; }
+        public ClamEngine? Engine { get; set; }
 
         /// <summary>
         /// Parameter accepting the path to the file to scan.
         /// </summary>
         [Parameter(Mandatory = true, Position = 0, HelpMessage = "Path to the file to scan.")]
-        public string Path { get; set; }
+        public string? Path { get; set; }
 
         /// <summary>
         /// Scans a file for viruses.
         /// </summary>
         protected override void ProcessRecord()
         {
-            string virusName;
+            // Validate parameters
+            if (Engine == null)
+            {
+                ThrowTerminatingError(new ErrorRecord(
+                    new PSArgumentNullException(nameof(Engine)),
+                    "NullEngine",
+                    ErrorCategory.InvalidArgument,
+                    Engine));
+                return;
+            }
 
-            var scanResult = Engine.ScanFile(Path, out virusName);
+            if (string.IsNullOrEmpty(Path))
+            {
+                ThrowTerminatingError(new ErrorRecord(
+                    new PSArgumentNullException(nameof(Path)),
+                    "NullPath",
+                    ErrorCategory.InvalidArgument,
+                    Path));
+                return;
+            }
 
+            var scanResult = Engine.ScanFile(Path, out string virusName);
             var fileScanResult = new FileScanResult(Path, scanResult == ScanResult.Virus, virusName);
 
             WriteObject(fileScanResult);

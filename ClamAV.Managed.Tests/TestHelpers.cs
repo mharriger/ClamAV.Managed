@@ -32,7 +32,7 @@ namespace ClamAV.Managed.Tests
         /// </summary>
         public static string TestFilesDirectory
         {
-            get { return "../../../TestFiles"; }
+            get { return Path.GetFullPath("../../../../TestFiles").ToString(); }
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace ClamAV.Managed.Tests
         /// <returns>A boolean variable indicating whether the directory exists.</returns>
         public static bool TestFilesDirectoryExists()
         {
-            return Directory.Exists(TestFilesDirectory);
+            return Directory.Exists(Path.GetFullPath(TestFilesDirectory).ToString());
         }
 
         /// <summary>

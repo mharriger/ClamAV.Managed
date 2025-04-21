@@ -25,14 +25,14 @@ namespace ClamAV.Managed.Tests
     [TestFixture]
     public class ClamEngineLoadTests
     {
-        private ClamEngine _clamEngine;
+        private ClamEngine? _clamEngine;
 
         [SetUp]
         public void SetUp()
         {
-            if (!TestHelpers.TestFilesDirectoryExists())
-                Assert.Ignore("TestFiles directory is missing.");
-
+            if (!TestHelpers.TestFilesDirectoryExists()) {
+                Assert.Ignore("TestFiles directory is missing."  + Directory.GetCurrentDirectory());
+            }
             _clamEngine = new ClamEngine();
         }
 
@@ -49,11 +49,17 @@ namespace ClamAV.Managed.Tests
         [Test]
         public void LoadDatabaseFromCustomPathIsSuccessful()
         {
-            _clamEngine.LoadDatabase(Path.Combine(TestHelpers.TestFilesDirectory, "db"));
-
-            Assert.That(_clamEngine.DatabaseOptions, Is.Not.EqualTo(0));
-            Assert.That(_clamEngine.DatabaseTime, Is.Not.EqualTo(0));
-            Assert.That(_clamEngine.DatabaseVersion, Is.Not.EqualTo(0));
+            if (_clamEngine != null)
+            {
+                _clamEngine.LoadDatabase(Path.Combine(TestHelpers.TestFilesDirectory, "db"));
+                Assert.That((uint)_clamEngine.DatabaseOptions, Is.Not.EqualTo(0));
+                Assert.That(_clamEngine.DatabaseTime, Is.Not.EqualTo(0));
+                Assert.That(_clamEngine.DatabaseVersion, Is.Not.EqualTo(0));
+            }
+            else
+            {
+                Assert.Fail("_clamEngine is null.");
+            }
         }
     }
 }

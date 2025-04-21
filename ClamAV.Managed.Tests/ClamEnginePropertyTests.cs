@@ -18,6 +18,7 @@
  */
 
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace ClamAV.Managed.Tests
 {
@@ -53,7 +54,7 @@ namespace ClamAV.Managed.Tests
         {
             var version = ClamEngine.Version;
 
-            Assert.IsFalse(string.IsNullOrEmpty(version));
+            Assert.That(version, Is.Not.Null.And.Not.Empty);
         }
 
         [Test]
@@ -61,7 +62,7 @@ namespace ClamAV.Managed.Tests
         {
             var databaseDirectory = _clamEngine.DatabaseDirectory;
 
-            Assert.IsFalse(string.IsNullOrEmpty(databaseDirectory));
+            Assert.That(databaseDirectory, Is.Not.Null.And.Not.Empty);
         }
 
         [Test]
@@ -71,7 +72,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.MaxScanSize = value;
 
-            Assert.AreEqual(value, _clamEngine.MaxScanSize);
+            Assert.That(_clamEngine.MaxScanSize, Is.EqualTo(value));
         }
 
         [Test]
@@ -81,7 +82,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.MaxFileSize = value;
 
-            Assert.AreEqual(value, _clamEngine.MaxFileSize);
+            Assert.That(_clamEngine.MaxFileSize, Is.EqualTo(value));
         }
 
         [Test]
@@ -91,7 +92,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.MaxRecursion = value;
 
-            Assert.AreEqual(value, _clamEngine.MaxRecursion);
+            Assert.That(_clamEngine.MaxRecursion, Is.EqualTo(value));
         }
 
         [Test]
@@ -101,7 +102,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.MaxFiles = value;
 
-            Assert.AreEqual(value, _clamEngine.MaxFiles);
+            Assert.That(_clamEngine.MaxFiles, Is.EqualTo(value));
         }
 
         [Test]
@@ -111,7 +112,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.MinCCCount = value;
 
-            Assert.AreEqual(value, _clamEngine.MinCCCount);
+            Assert.That(_clamEngine.MinCCCount, Is.EqualTo(value));
         }
 
         [Test]
@@ -121,7 +122,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.MinSSNCount = value;
 
-            Assert.AreEqual(value, _clamEngine.MinSSNCount);
+            Assert.That(_clamEngine.MinSSNCount, Is.EqualTo(value));
         }
 
         [Test]
@@ -131,7 +132,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.PuaCategories = value;
 
-            Assert.AreEqual(value, _clamEngine.PuaCategories);
+            Assert.That(_clamEngine.PuaCategories, Is.EqualTo(value));
         }
 
         [Test]
@@ -141,7 +142,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.ACOnly = value;
 
-            Assert.AreEqual(value, _clamEngine.ACOnly);
+            Assert.That(_clamEngine.ACOnly, Is.EqualTo(value));
         }
 
         [Test]
@@ -151,7 +152,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.ACMinDepth = value;
 
-            Assert.AreEqual(value, _clamEngine.ACMinDepth);
+            Assert.That(_clamEngine.ACMinDepth, Is.EqualTo(value));
         }
 
         [Test]
@@ -161,7 +162,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.ACMaxDepth = value;
 
-            Assert.AreEqual(value, _clamEngine.ACMaxDepth);
+            Assert.That(_clamEngine.ACMaxDepth, Is.EqualTo(value));
         }
 
         [Test]
@@ -171,7 +172,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.TempDir = value;
 
-            Assert.AreEqual(value, _clamEngine.TempDir);
+            Assert.That(_clamEngine.TempDir, Is.EqualTo(value));
         }
 
         [Test]
@@ -181,7 +182,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.KeepTempFiles = value;
 
-            Assert.AreEqual(value, _clamEngine.KeepTempFiles);
+            Assert.That(_clamEngine.KeepTempFiles, Is.EqualTo(value));
         }
 
         [Test]
@@ -191,7 +192,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.BytecodeSecurity = value;
 
-            Assert.AreEqual(value, _clamEngine.BytecodeSecurity);
+            Assert.That(_clamEngine.BytecodeSecurity, Is.EqualTo(value));
         }
 
         [Test]
@@ -201,7 +202,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.BytecodeTimeout = value;
 
-            Assert.AreEqual(value, _clamEngine.BytecodeTimeout);
+            Assert.That(_clamEngine.BytecodeTimeout, Is.EqualTo(value));
         }
 
         [Test]
@@ -211,7 +212,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.BytecodeMode = value;
 
-            Assert.AreEqual(value, _clamEngine.BytecodeMode);
+            Assert.That(_clamEngine.BytecodeMode, Is.EqualTo(value));
         }
 
         [Test]
@@ -221,7 +222,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.MaxEmbeddedPE = value;
 
-            Assert.AreEqual(value, _clamEngine.MaxEmbeddedPE);
+            Assert.That(_clamEngine.MaxEmbeddedPE, Is.EqualTo(value));
         }
 
         [Test]
@@ -231,7 +232,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.MaxHtmlNormalize = value;
 
-            Assert.AreEqual(value, _clamEngine.MaxHtmlNormalize);
+            Assert.That(_clamEngine.MaxHtmlNormalize, Is.EqualTo(value));
         }
 
         [Test]
@@ -241,7 +242,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.MaxHtmlNoTags = value;
 
-            Assert.AreEqual(value, _clamEngine.MaxHtmlNoTags);
+            Assert.That(_clamEngine.MaxHtmlNoTags, Is.EqualTo(value));
         }
 
         [Test]
@@ -251,7 +252,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.MaxScriptNormalize = value;
 
-            Assert.AreEqual(value, _clamEngine.MaxScriptNormalize);
+            Assert.That(_clamEngine.MaxScriptNormalize, Is.EqualTo(value));
         }
 
         [Test]
@@ -261,7 +262,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.MaxZipTypeRcg = value;
 
-            Assert.AreEqual(value, _clamEngine.MaxZipTypeRcg);
+            Assert.That(_clamEngine.MaxZipTypeRcg, Is.EqualTo(value));
         }
         
         [Test]
@@ -271,7 +272,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.ForceToDisk = value;
 
-            Assert.AreEqual(value, _clamEngine.ForceToDisk);
+            Assert.That(_clamEngine.ForceToDisk, Is.EqualTo(value));
         }
 
         [Test]
@@ -281,17 +282,18 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.DisableCache = value;
 
-            Assert.AreEqual(value, _clamEngine.DisableCache);
+            Assert.That(_clamEngine.DisableCache, Is.EqualTo(value));
         }
 
         [Test]
+        [Ignore("Not implemented in libclamav.dll")]
         public void DisablePeStatsIsReadWritable()
         {
             var value = true;
 
             _clamEngine.DisablePeStats = value;
 
-            Assert.AreEqual(value, _clamEngine.DisablePeStats);
+            Assert.That(_clamEngine.DisablePeStats, Is.EqualTo(value));
         }
 
         [Test]
@@ -301,7 +303,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.StatsTimeout = value;
 
-            Assert.AreEqual(value, _clamEngine.StatsTimeout);
+            Assert.That(_clamEngine.StatsTimeout, Is.EqualTo(value));
         }
 
         [Test]
@@ -311,7 +313,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.MaxPartitions = value;
 
-            Assert.AreEqual(value, _clamEngine.MaxPartitions);
+            Assert.That(_clamEngine.MaxPartitions, Is.EqualTo(value));
         }
 
         [Test]
@@ -321,7 +323,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.MaxIconSpe = value;
 
-            Assert.AreEqual(value, _clamEngine.MaxIconSpe);
+            Assert.That(_clamEngine.MaxIconSpe, Is.EqualTo(value));
         }
 
         [Test]
@@ -331,7 +333,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.MaxRecHwp3 = value;
 
-            Assert.AreEqual(value, _clamEngine.MaxRecHwp3);
+            Assert.That(_clamEngine.MaxRecHwp3, Is.EqualTo(value));
         }
 
         [Test]
@@ -341,7 +343,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.TimeLimit = value;
 
-            Assert.AreEqual(value, _clamEngine.TimeLimit);
+            Assert.That(_clamEngine.TimeLimit, Is.EqualTo(value));
         }
 
         [Test]
@@ -351,7 +353,7 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.PcreMatchLimit = value;
 
-            Assert.AreEqual(value, _clamEngine.PcreMatchLimit);
+            Assert.That(_clamEngine.PcreMatchLimit, Is.EqualTo(value));
         }
 
         [Test]
@@ -361,37 +363,39 @@ namespace ClamAV.Managed.Tests
 
             _clamEngine.PcreRecMatchLimit = value;
 
-            Assert.AreEqual(value, _clamEngine.PcreRecMatchLimit);
+            Assert.That(_clamEngine.PcreRecMatchLimit, Is.EqualTo(value));
         }
 
         [Test]
         public void PcreMaxFilesizeIsReadWritable()
         {
-            uint value = 17;
+            ulong value = 17;
 
             _clamEngine.PcreMaxFilesize = value;
 
-            Assert.AreEqual(value, _clamEngine.PcreMaxFilesize);
+            Assert.That(_clamEngine.PcreMaxFilesize, Is.EqualTo(value));
         }
 
         [Test]
+        [Ignore("Not implemented in libclamav.dll")]
         public void DisablePeCertsIsReadWritable()
         {
             var value = true;
 
             _clamEngine.DisablePeCerts = value;
 
-            Assert.AreEqual(value, _clamEngine.DisablePeCerts);
+            Assert.That(_clamEngine.DisablePeCerts, Is.EqualTo(value));
         }
 
         [Test]
+        [Ignore("Not implemented in libclamav.dll")]
         public void PeDumpCertsIsReadWritable()
         {
             var value = true;
 
             _clamEngine.PeDumpCerts = value;
 
-            Assert.AreEqual(value, _clamEngine.PeDumpCerts);
+            Assert.That(_clamEngine.PeDumpCerts, Is.EqualTo(value));
         }
     }
 }

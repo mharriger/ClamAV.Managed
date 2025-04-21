@@ -374,12 +374,12 @@ namespace ClamAV.Managed
         }
 
         /// <summary>
-        /// This clamscan option is currently for testing only. It sets the engine parameter CL_ENGINE_TIME_LIMIT. The value is in milliseconds.     
+        /// This clamscan option is currently for testing only. It sets the engine parameter CL_ENGINE_MAX_SCANTIME. The value is in milliseconds.     
         /// </summary>
         public uint TimeLimit
         {
-            get { return (uint) EngineGetNum(UnsafeNativeMethods.cl_engine_field.CL_ENGINE_TIME_LIMIT); }
-            set { EngineSetNum(UnsafeNativeMethods.cl_engine_field.CL_ENGINE_TIME_LIMIT, value); }
+            get { return (uint) EngineGetNum(UnsafeNativeMethods.cl_engine_field.CL_ENGINE_MAX_SCANTIME); }
+            set { EngineSetNum(UnsafeNativeMethods.cl_engine_field.CL_ENGINE_MAX_SCANTIME, value); }
         }
 
         /// <summary>
@@ -417,7 +417,7 @@ namespace ClamAV.Managed
         public ulong PcreMaxFilesize
         {
             get { return (ulong) EngineGetNum(UnsafeNativeMethods.cl_engine_field.CL_ENGINE_PCRE_MAX_FILESIZE); }
-            set { EngineSetNum(UnsafeNativeMethods.cl_engine_field.CL_ENGINE_MAX_FILESIZE, (long) value); }
+            set { EngineSetNum(UnsafeNativeMethods.cl_engine_field.CL_ENGINE_PCRE_MAX_FILESIZE, (long) value); }
         }
 
         /// <summary>

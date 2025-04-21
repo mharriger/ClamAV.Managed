@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ClamAV.Managed.Async
@@ -34,10 +35,11 @@ namespace ClamAV.Managed.Async
         /// Asynchronously load databases from the default hardcoded path using standard options.
         /// </summary>
         /// <param name="engine">ClamAV engine instance.</param>
+        /// <param name="cancellationToken">Optional cancellation token to cancel the operation.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public static async Task LoadDatabaseAsync(this ClamEngine engine)
+        public static Task LoadDatabaseAsync(this ClamEngine engine, CancellationToken cancellationToken = default)
         {
-            await Task.Factory.StartNew(engine.LoadDatabase);
+            return Task.Run(engine.LoadDatabase, cancellationToken);
         }
 
         /// <summary>
@@ -45,10 +47,11 @@ namespace ClamAV.Managed.Async
         /// </summary>
         /// <param name="engine">ClamAV engine instance.</param>
         /// <param name="options">Options with which to load the database.</param>
+        /// <param name="cancellationToken">Optional cancellation token to cancel the operation.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public static async Task LoadDatabaseAsync(this ClamEngine engine, LoadOptions options)
+        public static Task LoadDatabaseAsync(this ClamEngine engine, LoadOptions options, CancellationToken cancellationToken = default)
         {
-            await Task.Factory.StartNew(() => engine.LoadDatabase(options));
+            return Task.Run(() => engine.LoadDatabase(options), cancellationToken);
         }
 
         /// <summary>
@@ -56,10 +59,11 @@ namespace ClamAV.Managed.Async
         /// </summary>
         /// <param name="engine">ClamAV engine instance.</param>
         /// <param name="path">Path to the database file or a directory containing database files.</param>
+        /// <param name="cancellationToken">Optional cancellation token to cancel the operation.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public static async Task LoadDatabaseAsync(this ClamEngine engine, string path)
+        public static Task LoadDatabaseAsync(this ClamEngine engine, string path, CancellationToken cancellationToken = default)
         {
-            await Task.Factory.StartNew(() => engine.LoadDatabase(path));
+            return Task.Run(() => engine.LoadDatabase(path), cancellationToken);
         }
 
         /// <summary>
@@ -68,10 +72,11 @@ namespace ClamAV.Managed.Async
         /// <param name="engine">ClamAV engine instance.</param>
         /// <param name="path">Path to the database file or a directory containing database files.</param>
         /// <param name="options">Options with which to load the database.</param>
+        /// <param name="cancellationToken">Optional cancellation token to cancel the operation.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public static async Task LoadDatabaseAsync(this ClamEngine engine, string path, LoadOptions options)
+        public static Task LoadDatabaseAsync(this ClamEngine engine, string path, LoadOptions options, CancellationToken cancellationToken = default)
         {
-            await Task.Factory.StartNew(() => engine.LoadDatabase(path, options));
+            return Task.Run(() => engine.LoadDatabase(path, options), cancellationToken);
         }
 
         /// <summary>
@@ -79,10 +84,11 @@ namespace ClamAV.Managed.Async
         /// </summary>
         /// <param name="engine">ClamAV engine instance.</param>
         /// <param name="path">Path to the file to be scanned.</param>
+        /// <param name="cancellationToken">Optional cancellation token to cancel the operation.</param>
         /// <returns>The task object representing the asynchronous operation. The Result property on the task returns a scan result.</returns>
-        public static async Task<FileScanResult> ScanFileAsync(this ClamEngine engine, string path)
+        public static Task<FileScanResult> ScanFileAsync(this ClamEngine engine, string path, CancellationToken cancellationToken = default)
         {
-            return await engine.ScanFileAsync(path, ScanOptions.StandardOptions);
+            return ScanFileAsync(engine, path, ScanOptions.StandardOptions, cancellationToken);
         }
 
         /// <summary>
@@ -91,13 +97,15 @@ namespace ClamAV.Managed.Async
         /// <param name="engine">ClamAV engine instance.</param>
         /// <param name="path">Path to the file to be scanned.</param>
         /// <param name="options">Scan options.</param>
+        /// <param name="cancellationToken">Optional cancellation token to cancel the operation.</param>
         /// <returns>The task object representing the asynchronous operation. The Result property on the task returns a scan result.</returns>
-        public static async Task<FileScanResult> ScanFileAsync(this ClamEngine engine, string path, ScanOptions options)
+        public static Task<FileScanResult> ScanFileAsync(this ClamEngine engine, string path, ScanOptions options, CancellationToken cancellationToken = default)
         {
-            var virusName = string.Empty;
-            var scanResult = await Task.Factory.StartNew(() => engine.ScanFile(path, options, out virusName));
-
-            return new FileScanResult(path, scanResult == ScanResult.Virus, virusName);
+            return Task.Run(() => 
+            {
+                var scanResult = engine.ScanFile(path, options, out string virusName);
+                return new FileScanResult(path, scanResult == ScanResult.Virus, virusName);
+            }, cancellationToken);
         }
 
         /// <summary>
@@ -105,10 +113,11 @@ namespace ClamAV.Managed.Async
         /// </summary>
         /// <param name="engine">ClamAV engine instance.</param>
         /// <param name="path">Path to scan.</param>
+        /// <param name="cancellationToken">Optional cancellation token to cancel the operation.</param>
         /// <returns>The task object representing the asynchronous operation. The Result property on the task returns the scan results.</returns>
-        public static async Task<IEnumerable<FileScanResult>> ScanDirectoryAsync(this ClamEngine engine, string path)
+        public static Task<IEnumerable<FileScanResult>> ScanDirectoryAsync(this ClamEngine engine, string path, CancellationToken cancellationToken = default)
         {
-            return await engine.ScanDirectoryAsync(path, ScanOptions.StandardOptions, true, 0);
+            return ScanDirectoryAsync(engine, path, ScanOptions.StandardOptions, true, 0, cancellationToken);
         }
 
         /// <summary>
@@ -117,10 +126,11 @@ namespace ClamAV.Managed.Async
         /// <param name="engine">ClamAV engine instance.</param>
         /// <param name="path">Path to scan.</param>
         /// <param name="options">Scan options.</param>
+        /// <param name="cancellationToken">Optional cancellation token to cancel the operation.</param>
         /// <returns>The task object representing the asynchronous operation. The Result property on the task returns the scan results.</returns>
-        public static async Task<IEnumerable<FileScanResult>> ScanDirectoryAsync(this ClamEngine engine, string path, ScanOptions options)
+        public static Task<IEnumerable<FileScanResult>> ScanDirectoryAsync(this ClamEngine engine, string path, ScanOptions options, CancellationToken cancellationToken = default)
         {
-            return await engine.ScanDirectoryAsync(path, options, true, 0);
+            return ScanDirectoryAsync(engine, path, options, true, 0, cancellationToken);
         }
 
         /// <summary>
@@ -131,55 +141,62 @@ namespace ClamAV.Managed.Async
         /// <param name="options">Scan options.</param>
         /// <param name="recurse">Whether to enter subdirectories.</param>
         /// <param name="maxDepth">Maximum depth to scan, or zero for unlimited.</param>
+        /// <param name="cancellationToken">Optional cancellation token to cancel the operation.</param>
         /// <returns>The task object representing the asynchronous operation. The Result property on the task returns the scan results.</returns>
-        public static async Task<IEnumerable<FileScanResult>> ScanDirectoryAsync(this ClamEngine engine, string path, ScanOptions options, bool recurse, int maxDepth)
+        public static Task<IEnumerable<FileScanResult>> ScanDirectoryAsync(
+            this ClamEngine engine, 
+            string path, 
+            ScanOptions options, 
+            bool recurse, 
+            int maxDepth, 
+            CancellationToken cancellationToken = default)
         {
-            var scanQueue = new Queue<string>();
-            
-            var pathStack = new Stack<Tuple<string /* path */, int /* depth */>>();
-
-            // Push the starting directory onto the stack.
-            pathStack.Push(Tuple.Create(path, 1));
-
-            while (pathStack.Count > 0)
+            return Task.Run(async () => 
             {
-                var stackState = pathStack.Pop();
+                var scanQueue = new Queue<string>();
+                
+                var pathStack = new Stack<(string path, int depth)>();
 
-                var currentPath = stackState.Item1;
-                var currentDepth = stackState.Item2;
+                // Push the starting directory onto the stack.
+                pathStack.Push((path, 1));
 
-                var attributes = File.GetAttributes(currentPath);
-
-                // If we're in a directory, push all files and subdirectories to the stack.
-                if ((attributes & FileAttributes.Directory) == FileAttributes.Directory)
+                while (pathStack.Count > 0 && !cancellationToken.IsCancellationRequested)
                 {
-                    // Check if we're not about to go too deep.
-                    if (recurse && (maxDepth == 0 || currentDepth < maxDepth))
-                    {
-                        var subFiles = Directory.GetFiles(currentPath);
-                        foreach (var file in subFiles)
-                        {
-                            pathStack.Push(Tuple.Create(file, currentDepth + 1));
-                        }
+                    var (currentPath, currentDepth) = pathStack.Pop();
 
-                        var subDirectories = Directory.GetDirectories(currentPath);
-                        foreach (var directory in subDirectories)
+                    var attributes = File.GetAttributes(currentPath);
+
+                    // If we're in a directory, push all files and subdirectories to the stack.
+                    if ((attributes & FileAttributes.Directory) == FileAttributes.Directory)
+                    {
+                        // Check if we're not about to go too deep.
+                        if (recurse && (maxDepth == 0 || currentDepth < maxDepth))
                         {
-                            pathStack.Push(Tuple.Create(directory, currentDepth + 1));
+                            foreach (var file in Directory.GetFiles(currentPath))
+                            {
+                                pathStack.Push((file, currentDepth + 1));
+                            }
+
+                            foreach (var directory in Directory.GetDirectories(currentPath))
+                            {
+                                pathStack.Push((directory, currentDepth + 1));
+                            }
                         }
                     }
+                    // If this is a file, enqueue it for scanning.
+                    else
+                    {
+                        scanQueue.Enqueue(currentPath);
+                    }
                 }
-                // If this is a file, enqueue it for scanning.
-                else
-                {
-                    scanQueue.Enqueue(currentPath);
-                }
-            }
 
-            var scanTasks = scanQueue.Select(filePath => engine.ScanFileAsync(filePath, options));
-            var scanResults = await Task.WhenAll(scanTasks);
+                cancellationToken.ThrowIfCancellationRequested();
 
-            return scanResults;
+                var scanTasks = scanQueue.Select(filePath => ScanFileAsync(engine, filePath, options, cancellationToken));
+                var scanResults = await Task.WhenAll(scanTasks).ConfigureAwait(false);
+
+                return scanResults.AsEnumerable();
+            }, cancellationToken);
         }
     }
 }
