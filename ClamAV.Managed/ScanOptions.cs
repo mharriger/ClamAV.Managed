@@ -18,118 +18,293 @@
  */
 
 using System;
+using System.Runtime.InteropServices;
 
 namespace ClamAV.Managed
 {
     /// <summary>
     /// Option flags for performing scans.
     /// </summary>
-    [Flags]
-    public enum ScanOptions : uint
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ScanOptions
     {
         /// <summary>
-        /// Alias for a recommended set of scan options.
+        /// General scanning options.
         /// </summary>
-        StandardOptions = Archive | ScanMail | OLE2 | PDF | HTML | PE | Algorithmic | ELF,
+        public uint General;
+
         /// <summary>
-        /// Disable support for special files.
+        /// Parsing capabilities options.
         /// </summary>
-        Raw = 0x0,
+        public uint Parse;
+
         /// <summary>
-        /// Transparently scan various archive formats.
+        /// Heuristic alerting options.
         /// </summary>
-        Archive = 0x1,
+        public uint Heuristic;
+
         /// <summary>
-        /// Detect encrypted archives as viruses.
+        /// Mail scanning options.
         /// </summary>
-        BlockEncryptedFiles = 0x8,
+        public uint Mail;
+
         /// <summary>
-        /// Scan mail files.
+        /// Development options.
         /// </summary>
-        ScanMail = 0x02,
+        public uint Dev;
+
         /// <summary>
-        /// Scan OLE2 containers, including Microsoft Office files and Windows Installer packages.
+        /// General scan option flags
         /// </summary>
-        OLE2 = 0x4,
+        [Flags]
+        public enum GeneralOptions : uint
+        {
+            /// <summary>
+            /// No options specified.
+            /// </summary>
+            None = 0x0,
+
+            /// <summary>
+            /// Scan in all-match mode.
+            /// </summary>
+            AllMatches = 0x1,
+
+            /// <summary>
+            /// Collect metadata (--gen-json).
+            /// </summary>
+            CollectMetadata = 0x2,
+
+            /// <summary>
+            /// Enable heuristic alerts.
+            /// </summary>
+            Heuristics = 0x4,
+
+            /// <summary>
+            /// Allow heuristic match to take precedence.
+            /// </summary>
+            HeuristicPrecedence = 0x8,
+
+            /// <summary>
+            /// Scanner will not have read access to files.
+            /// </summary>
+            Unprivileged = 0x10,
+
+            /// <summary>
+            /// Store URLs found in HTML a and form tags when recording JSON metadata.
+            /// </summary>
+            StoreHtmlUrls = 0x20,
+        }
+
         /// <summary>
-        /// Scan Adobe PDF files.
+        /// Parsing capabilities options.
         /// </summary>
-        PDF = 0x4000,
+        [Flags]
+        public enum ParseOptions : uint
+        {
+            /// <summary>
+            /// No parsing options specified.
+            /// </summary>
+            None = 0x0,
+
+            /// <summary>
+            /// Transparently scan various archive formats.
+            /// </summary>
+            Archive = 0x1,
+
+            /// <summary>
+            /// Enable support for ELF executable files.
+            /// </summary>
+            ELF = 0x2,
+
+            /// <summary>
+            /// Scan Adobe PDF files.
+            /// </summary>
+            PDF = 0x4,
+
+            /// <summary>
+            /// Enable scanning of SWF files.
+            /// </summary>
+            SWF = 0x8,
+
+            /// <summary>
+            /// Scan HWP3 document files.
+            /// </summary>
+            HWP3 = 0x10,
+
+            /// <summary>
+            /// Scan XML-based document files.
+            /// </summary>
+            XMLDocs = 0x20,
+
+            /// <summary>
+            /// Scan mail files.
+            /// </summary>
+            Mail = 0x40,
+
+            /// <summary>
+            /// Scan OLE2 containers, including Microsoft Office files and Windows Installer packages.
+            /// </summary>
+            OLE2 = 0x80,
+
+            /// <summary>
+            /// Enable HTML normalisation (including ScrEnc decryption).
+            /// </summary>
+            HTML = 0x100,
+
+            /// <summary>
+            /// Enable deep scanning and unpacking of Portable Executable files.
+            /// </summary>
+            PE = 0x200,
+
+            /// <summary>
+            /// Enable scanning of OneNote files.
+            /// </summary>
+            OneNote = 0x400,
+
+            /// <summary>
+            /// Enable parsing images (graphics).
+            /// </summary>
+            Image = 0x800,
+
+            /// <summary>
+            /// Enable image fuzzy hash calculation.
+            /// </summary>
+            ImageFuzzyHash = 0x1000,
+
+            /// <summary>
+            /// Enable all parsing options.
+            /// </summary>
+            All = ~0u
+        }
+
         /// <summary>
-        /// Enable deep scanning and unpacking of Portable Executable files.
+        /// Heuristic alerting options.
         /// </summary>
-        PE = 0x20,
+        [Flags]
+        public enum HeuristicOptions : uint
+        {
+            /// <summary>
+            /// No heuristic options specified.
+            /// </summary>
+            None = 0x0,
+
+            /// <summary>
+            /// Alert on broken PE and broken ELF files.
+            /// </summary>
+            Broken = 0x2,
+
+            /// <summary>
+            /// Alert when files exceed scan limits (filesize, max scansize, or max recursion depth).
+            /// </summary>
+            ExceedsMax = 0x4,
+
+            /// <summary>
+            /// Always block SSL mismatches in URLs.
+            /// </summary>
+            PhishingSSLMismatch = 0x8,
+
+            /// <summary>
+            /// Always block cloaked URLs.
+            /// </summary>
+            PhishingCloak = 0x10,
+
+            /// <summary>
+            /// OLE2 files containing VBA macros will be marked as infected.
+            /// </summary>
+            Macros = 0x20,
+
+            /// <summary>
+            /// Detect encrypted archives as viruses.
+            /// </summary>
+            EncryptedArchive = 0x40,
+
+            /// <summary>
+            /// Alert if a document is encrypted (pdf, docx, etc).
+            /// </summary>
+            EncryptedDoc = 0x80,
+
+            /// <summary>
+            /// Detect partition intersections in raw DMGs using heuristics.
+            /// </summary>
+            PartitionIntersection = 0x100,
+
+            /// <summary>
+            /// Enable the DLP module to scan for sensitive data.
+            /// </summary>
+            Structured = 0x200,
+
+            /// <summary>
+            /// Search for SSNs structured as xx-yy-zzzz.
+            /// </summary>
+            StructuredSSNNormal = 0x400,
+
+            /// <summary>
+            /// Search for SSNs structured as xxyyzzzz.
+            /// </summary>
+            StructuredSSNStripped = 0x800,
+
+            /// <summary>
+            /// Alert when detecting credit card numbers.
+            /// </summary>
+            StructuredCC = 0x1000,
+
+            /// <summary>
+            /// Alert if a file does not match the identified file format (JPEG, TIFF, GIF, PNG).
+            /// </summary>
+            BrokenMedia = 0x2000,
+        }
+
         /// <summary>
-        /// Enable support for ELF executable files.
+        /// Mail scanning options.
         /// </summary>
-        ELF = 0x2000,
+        [Flags]
+        public enum MailOptions : uint
+        {
+            /// <summary>
+            /// No mail options specified.
+            /// </summary>
+            None = 0x0,
+
+            /// <summary>
+            /// Scan RFC1341 messages split over many emails.
+            /// </summary>
+            PartialMessage = 0x1,
+        }
+
         /// <summary>
-        /// Try to detect and mark broken executables.
+        /// Development options.
         /// </summary>
-        BlockBroken = 0x40,
+        [Flags]
+        public enum DevOptions : uint
+        {
+            /// <summary>
+            /// No development options specified.
+            /// </summary>
+            None = 0x0,
+
+            /// <summary>
+            /// Enables hash output in sha-collect builds - for internal use only.
+            /// </summary>
+            CollectSHA = 0x1,
+
+            /// <summary>
+            /// Collect performance timings.
+            /// </summary>
+            CollectPerformanceInfo = 0x2,
+        }
+
         /// <summary>
-        /// Enable HTML normalisation (including ScrEnc decryption).
+        /// Alias for a recommended set of scan options with sensible defaults.
         /// </summary>
-        HTML = 0x10,
-        /// <summary>
-        /// Enable algorithmic virus detection.
-        /// </summary>
-        Algorithmic = 0x200,
-        /// <summary>
-        /// Always block SSL mismatches in URLs.
-        /// </summary>
-        PhishingBlockSSL = 0x800,
-        /// <summary>
-        /// Always block cloaked URLs.
-        /// </summary>
-        PhishingBlockCloak = 0x1000,
-        /// <summary>
-        /// Enable the DLP module to scan for credit card numbers and SSNs.
-        /// </summary>
-        Structured = 0x8000,
-        /// <summary>
-        /// Search for SSNs structured as xx-yy-zzzz.
-        /// </summary>
-        StructuredSSNNormal = 0x10000,
-        /// <summary>
-        /// Search for SSNs structured as xxyyzzzz.
-        /// </summary>
-        StructuredSSNStripped = 0x20000,
-        /// <summary>
-        /// Scan RFC1341 messages split over many emails.
-        /// </summary>
-        PartialMessage = 0x40000,
-        /// <summary>
-        /// Allow heuristic matches to take precedence.
-        /// </summary>
-        HeuristicPrecedence = 0x80000,
-        /// <summary>
-        /// OLE2 containers containing VBA macros will be marked as infected.
-        /// </summary>
-        BlockMacros = 0x100000,
-        /// <summary>
-        /// Return all matches in a scan result.
-        /// </summary>
-        AllMatches = 0x200000,
-        /// <summary>
-        /// Enable scanning of SWF files.
-        /// </summary>
-        SWF = 0x400000,
-        /// <summary>
-        /// Detect partition intersections in raw DMGs using heuristics.
-        /// </summary>
-        PartitionIntersections = 0x800000,
-        /// <summary>
-        /// Scan XML-based document files. If this option is turned off, the files will still be scanned, but without additional processing.
-        /// </summary>
-        XmlDocs = 0x1000000,
-        /// <summary>
-        /// Scan HPW3 document files. If this option is turned off, the files will still be scanned, but without additional processing.
-        /// </summary>
-        Hwp3 = 0x2000000,
-        /// <summary>
-        /// Collect performance timings.
-        /// </summary>
-        ScanPerformanceInfo = 0x40000000
+        public static ScanOptions StandardOptions
+        {
+            get
+            {
+                return new ScanOptions
+                {
+                    Parse = (uint)ParseOptions.All
+                };
+            }
+        }
     }
 }

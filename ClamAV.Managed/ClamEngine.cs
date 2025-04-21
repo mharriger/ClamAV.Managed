@@ -1,4 +1,4 @@
-﻿/*
+/*
  * ClamAV.Managed - Managed bindings for ClamAV
  * Copyright (C) 2011, 2013-2016 Rupert Muchembled
  * 
@@ -274,11 +274,8 @@ namespace ClamAV.Managed
 
             ulong scanned = 0;
 
-            // Convert ScanOptions parameter.
-            uint options = (uint)scanOptions;
-
             // Perform scan
-            var result = (UnsafeNativeMethods.cl_error_t)UnsafeNativeMethods.cl_scanfile(filePath, ref virusNamePtr, ref scanned, _engine, options);
+            var result = (UnsafeNativeMethods.cl_error_t)UnsafeNativeMethods.cl_scanfile(filePath, ref virusNamePtr, ref scanned, _engine, ref scanOptions);
 
             if (result == UnsafeNativeMethods.cl_error_t.CL_CLEAN)
             {

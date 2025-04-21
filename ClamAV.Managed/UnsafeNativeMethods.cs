@@ -113,6 +113,7 @@ namespace ClamAV.Managed
         }
 
         /* db options */
+
         internal const uint CL_DB_PHISHING = 0x2;
         internal const uint CL_DB_PHISHING_URLS = 0x8;
         internal const uint CL_DB_PUA = 0x10;
@@ -508,7 +509,7 @@ namespace ClamAV.Managed
         internal static partial int cl_scandesc_callback(int desc, IntPtr virname, IntPtr scanned, IntPtr engine, uint scanoptions, IntPtr context);
 
         [LibraryImport(libraryName, EntryPoint = "cl_scanfile", StringMarshalling = StringMarshalling.Utf8)]
-        internal static partial int cl_scanfile(string filename, ref IntPtr virname, ref ulong scanned, IntPtr engine, uint scanoptions);
+        internal static partial int cl_scanfile(string filename, ref IntPtr virname, ref ulong scanned, IntPtr engine, ref ScanOptions scanoptions);
 
         [DllImport(libraryName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         internal static extern int cl_scanfile_callback(string filename, ref string virname, ref ulong scanned, IntPtr engine, uint scanoptions, IntPtr context);
