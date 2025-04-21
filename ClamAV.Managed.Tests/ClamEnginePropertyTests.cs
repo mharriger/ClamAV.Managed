@@ -45,7 +45,6 @@ namespace ClamAV.Managed.Tests
             if (_clamEngine != null)
             {
                 _clamEngine.Dispose();
-                _clamEngine = null;
             }
         }
 
