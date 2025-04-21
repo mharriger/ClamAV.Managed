@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ClamAV.Managed - Managed bindings for ClamAV
  * Copyright (C) 2011, 2013-2016 Rupert Muchembled
  * 
@@ -360,14 +360,9 @@ namespace ClamAV.Managed
                     // Check if we're not about to go too deep.
                     if (recurse && (maxDepth == 0 || currentDepth < maxDepth))
                     {
-                        foreach (var file in Directory.GetFiles(currentPath))
+                        foreach (var file in Directory.GetFiles(currentPath, "*", SearchOption.AllDirectories))
                         {
                             pathStack.Push((file, currentDepth + 1));
-                        }
-
-                        foreach (var directory in Directory.GetDirectories(currentPath))
-                        {
-                            pathStack.Push((directory, currentDepth + 1));
                         }
                     }
                 }
