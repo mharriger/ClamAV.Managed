@@ -2,7 +2,7 @@
 
 ## Introduction
 
-ClamAV.Managed is a library written in C# for the .NET 8,
+ClamAV.Managed is a library written in C# for .NET 8,
 providing managed bindings for libclamav. It includes
 ClamAV.Managed.PowerShell, a set of PowerShell cmdlets for ClamAV scanning.
 It also comes with GUI sample code for performing virus scanning.
