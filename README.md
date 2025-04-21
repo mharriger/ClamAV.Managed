@@ -2,7 +2,7 @@
 
 ## Introduction
 
-ClamAV.Managed is a library written in C# for the .NET Framework and Mono,
+ClamAV.Managed is a library written in C# for the .NET 8,
 providing managed bindings for libclamav. It includes
 ClamAV.Managed.PowerShell, a set of PowerShell cmdlets for ClamAV scanning.
 It also comes with GUI sample code for performing virus scanning.
@@ -13,14 +13,9 @@ To use ClamAV.Managed, P/Invoke must be able to locate libclamav, either in
 your binary's execution directory or at some location in your system's library
 search path.
 
-You can obtain ClamAV binaries compiled for Windows at
-http://oss.netfarm.it/clamav/. It is recommended to use a version of libclamav
-compiled with Microsoft Visual C++.
-
-ClamAV.Managed is designed to be platform-agnostic with the intention of
-supporting Mono on Linux and Mac OS X. Although this is currently not a widely
-used combination, users are encouraged to try the software on these platforms
-to help find any possible issues that may arise.
+You can obtain ClamAV binaries at https://www.clamav.net/downloads. The
+current version of ClamAV.Managed has been tested with libclamav 1.4.2,
+other version may not work.
 
 For file scanning to work, you need to download ClamAV databases from 
 http://www.clamav.net. Databases can be loaded from an arbitrary directory
@@ -48,20 +43,13 @@ arbitrary location from which to load virus databases as an argument to the
 ClamEngine.LoadDatabase method.
 
 It is recommended to use the `freshclam` utility to obtain the latest ClamAV
-databases, but you can also try the `FetchDatabases.ps1` PowerShell script in
-the scripts directory and adapt it to your own purposes, remembering to select
-which databases you would like to obtain and changing the download URL to a
-local mirror.
-
-You can find a list of ClamAV database mirrors at
-http://www.clamav.net/mirrors.html. Databases will be named main.cvd, daily.cvd,
+databases. Databases will be named main.cvd, daily.cvd,
 bytecode.cvd, safebrowsing.cvd in the root directory of the mirror. More
 information about obtaining ClamAV databases can be found on the ClamAV website.
 
 ### ClamAV.Managed.Async Task-based Asynchronous Scanning
 
-ClamAV.Managed provides a task-based asynchronous API using the new async/await
-feature for .NET 4.5.1 in the ClamAV.Managed.Async project.
+ClamAV.Managed provides a task-based asynchronous API in the ClamAV.Managed.Async project.
 
 These extensions are still experimental, and you may encounter issues while
 performing parallel scans, particularly with a large quantity of long-running
