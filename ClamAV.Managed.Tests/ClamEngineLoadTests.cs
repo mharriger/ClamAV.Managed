@@ -51,7 +51,7 @@ namespace ClamAV.Managed.Tests
         {
             if (_clamEngine != null)
             {
-                _clamEngine.LoadDatabase(Path.Combine(TestHelpers.TestFilesDirectory, "db"));
+                _clamEngine.LoadDatabase();
                 Assert.That((uint)_clamEngine.DatabaseOptions, Is.Not.EqualTo(0));
                 Assert.That(_clamEngine.DatabaseTime, Is.Not.EqualTo(0));
                 Assert.That(_clamEngine.DatabaseVersion, Is.Not.EqualTo(0));

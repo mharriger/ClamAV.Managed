@@ -56,7 +56,7 @@ namespace ClamAV.Managed.Tests
             // Load the database to ensure proper scanning
             try
             {
-                _clamEngine.LoadDatabase(Path.Combine(_testFilesPath, "db"));
+                _clamEngine.LoadDatabase();
             }
             catch (Exception ex)
             {
