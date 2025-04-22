@@ -47,6 +47,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{9A91593B
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Non-Windows|Any CPU = Debug Non-Windows|Any CPU
+		Release Non-Windows|Any CPU = Release Non-Windows|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
@@ -75,6 +77,24 @@ Global
 		{E05DB2B7-0795-4E1B-BDAE-8FCF8426B755}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E05DB2B7-0795-4E1B-BDAE-8FCF8426B755}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E05DB2B7-0795-4E1B-BDAE-8FCF8426B755}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35282915-E7DC-4103-907E-2CE0A656F941}.Debug Non-Windows|Any CPU.ActiveCfg = Debug|Any CPU
+		{35282915-E7DC-4103-907E-2CE0A656F941}.Debug Non-Windows|Any CPU.Build.0 = Debug|Any CPU
+		{35282915-E7DC-4103-907E-2CE0A656F941}.Release Non-Windows|Any CPU.ActiveCfg = Release|Any CPU
+		{35282915-E7DC-4103-907E-2CE0A656F941}.Release Non-Windows|Any CPU.Build.0 = Release|Any CPU
+		{3F4B64D9-0B16-433F-B2A5-9E4EA6976F91}.Debug Non-Windows|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F4B64D9-0B16-433F-B2A5-9E4EA6976F91}.Debug Non-Windows|Any CPU.Build.0 = Debug|Any CPU
+		{3F4B64D9-0B16-433F-B2A5-9E4EA6976F91}.Release Non-Windows|Any CPU.ActiveCfg = Release|Any CPU
+		{3F4B64D9-0B16-433F-B2A5-9E4EA6976F91}.Release Non-Windows|Any CPU.Build.0 = Release|Any CPU
+		{A115449F-E757-4AAB-90AA-3C72CE373CB5}.Debug Non-Windows|Any CPU.ActiveCfg = Debug|Any CPU
+		{A115449F-E757-4AAB-90AA-3C72CE373CB5}.Release Non-Windows|Any CPU.ActiveCfg = Release |Any CPU
+		{C1F8AE4A-FDA7-4751-A716-E359702B78E7}.Debug Non-Windows|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1F8AE4A-FDA7-4751-A716-E359702B78E7}.Release Non-Windows|Any CPU.ActiveCfg = Release|Any CPU
+		{C57118AF-07C0-4064-B5FF-69A7DE79E1E2}.Debug Non-Windows|Any CPU.ActiveCfg = Debug|Any CPU
+		{C57118AF-07C0-4064-B5FF-69A7DE79E1E2}.Release Non-Windows|Any CPU.ActiveCfg = Release|Any CPU
+		{E05DB2B7-0795-4E1B-BDAE-8FCF8426B755}.Debug Non-Windows|Any CPU.ActiveCfg = Debug|Any CPU
+		{E05DB2B7-0795-4E1B-BDAE-8FCF8426B755}.Release Non-Windows|Any CPU.ActiveCfg = Release|Any CPU
+
+
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
