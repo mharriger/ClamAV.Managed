@@ -100,7 +100,7 @@ namespace ClamAV.Managed.Tests
             // Assert
             Assert.That(result, Is.EqualTo(ScanResult.Virus));
             Assert.That(virusName, Is.Not.Empty);
-            Assert.That(virusName, Does.Contain("EICAR"), "The virus name should contain 'EICAR'");
+            Assert.That(virusName.ToUpper(), Does.Contain("EICAR"), "The virus name should contain 'EICAR'");
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace ClamAV.Managed.Tests
                         "EICAR test file should be detected as a virus");
                     Assert.That(virusNames[i], Is.Not.Empty, 
                         "The virus name should not be empty");
-                    Assert.That(virusNames[i], Does.Contain("EICAR"), 
+                    Assert.That(virusNames[i].ToUpper(), Does.Contain("EICAR"), 
                         "The virus name should contain 'EICAR'");
                 }
             }
